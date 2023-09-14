@@ -1,0 +1,33 @@
+
+docker-compose ps
+docker-compose exec [サービス名] /bin/bash
+docker-compose exec php82apache /bin/bash
+
+
+■■■■■■■■■■■■■■■■■■■■■■■■■■■
+■サーバー証明書準備
+#  opensslがインストールされている環境で実行する
+#-----------------------
+#  server.key（秘密鍵）
+#  server.csr（公開鍵＋認証局での署名に必要な情報）
+#  server.crt（サーバ証明書）
+#-----------------------
+# 秘密鍵 作成　（パスワードの入力：wataru）
+openssl genrsa -aes128 2048 > server.key
+# 公開鍵 作成
+#   基本空欄でOK
+#   Country Nameには国内ならJP
+#   Common nameにはドメイン名を含んだFQDN形式のホスト名（例：hoge.example.com） もしくはIPアドレスを指定しましょう。
+#  「*」で作ってみる？
+openssl req -new -key server.key > server.csr
+# サーバー証明書 作成（1年）※10年だとブラウザ側でエラーになるらしい・・・
+openssl x509 -in server.csr -days 365 -req -signkey server.key > server.crt
+
+#  Apache起動時のパスフレーズ入力を省略する
+#  何も設定しない場合、Apacheの起動時にパスフレーズの入力が求められます。
+#  この操作を回避するには、以下のコマンドで秘密鍵からパスプレーズを削除しておきましょう。
+mv server.key server.key.org
+openssl rsa -in server.key.org > server.key
+■■■■■■■■■■■■■■■■■■■■■■■■■■■
+
+

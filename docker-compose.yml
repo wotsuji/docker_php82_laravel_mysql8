@@ -1,0 +1,75 @@
+# docker-compose up
+# docker-compose up --build
+# docker-compose down
+# docker-compose down --rmi all --volumes --remove-orphans
+# docker-compose exec apache_php82 /bin/bash
+version: "3.8"
+
+services:
+# apache + php + SSL
+  apache_php82:
+    container_name: apache_php82
+    build: ./container/apache_php82
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - "webnet"
+    volumes:
+      - ./html:/var/www/html
+      - ./apache_php82/php.ini:/usr/local/etc/php/php.ini
+########################
+# docker compose exec apache_php82 bash
+# composer create-project --prefer-dist "laravel/laravel=" .
+########################
+
+# mysql
+  mysql8:
+    container_name: mysql8
+    image: mysql:8.0.34
+    # コンテナ内の環境変数を指定
+    environment:
+      # ユーザーアカウントとDBを設定
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USER}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_HOST: '${DB_HOST}'
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      TZ: '${TZ}'
+    # 起動時のコマンド
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    volumes:
+      - ./container/mysql8/data:/var/lib/mysql
+      - ./container/mysql8/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - '${FORWARD_DB_PORT}:3306'
+    networks:
+      - "webnet"
+
+# PHPMyadmin
+  phpmyadmin:
+    # コンテナの名前
+    container_name: phpmyadmin
+    # Docker Hubからイメージをダウンロード
+    image: phpmyadmin/phpmyadmin:5.2.0
+    # コンテナと他のサービスを繋げる
+    links:
+      - mysql8
+    # localhost:8080 で phpmyadmin の管理画面にアクセス
+    ports:
+      - '${FORWARD_PMA_PORT}:80'
+    environment:
+      # mysqlにコンテナに接続
+      PMA_HOST: '${DB_HOST}'
+    networks:
+      - "webnet"
+    # セッション情報をボリュームに設定することで永続化できる
+    volumes:
+      - ./container/phpmyadmin/sessions:/sessions
+
+# nginx
+
+networks:
+  webnet:
+
