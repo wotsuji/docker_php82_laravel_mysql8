@@ -16,8 +16,9 @@ services:
     networks:
       - "webnet"
     volumes:
-      - ./html:/var/www/html
-      - ./apache_php82/php.ini:/usr/local/etc/php/php.ini
+#      - ./html:/var/www/html
+      - ./../website_o2zdip_site:/var/www/html
+      - ./container/apache_php82/php.ini:/usr/local/etc/php/php.ini
 ########################
 # docker compose exec apache_php82 bash
 # composer create-project --prefer-dist "laravel/laravel=" .
