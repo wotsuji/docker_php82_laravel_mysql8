@@ -24,3 +24,6 @@ Homestead.json
 
 # mysql data.
 /container/mysql8/data
+
+#apache
+/container/apache_php82/ssl/*
