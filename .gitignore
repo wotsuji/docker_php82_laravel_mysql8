@@ -23,7 +23,13 @@ Homestead.json
 .phpunit.result.cache
 
 # mysql data.
-/container/mysql8/data
+/container/mysql8/data/*
+!/container/mysql8/data/.gitkeep
 
 #apache
 /container/apache_php82/ssl/*
+!/container/apache_php82/ssl/.gitkeep
+
+#phpmyadmin
+/container/phpmyadmin/sessions/*
+!/container/phpmyadmin/sessions/.gitkeep
