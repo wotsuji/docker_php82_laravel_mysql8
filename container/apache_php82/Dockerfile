@@ -16,7 +16,8 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod +x /usr/local/bin/install-php-extensions
 
 # PHP のエクステンションをインストール
-RUN install-php-extensions opcache intl gd exif imagick mysqli pdo_mysql redis xdebug zip
+# opcache ← PHPコードの変更の反映が遅れる場合があるため開発環境に入れない
+RUN install-php-extensions  intl gd exif imagick mysqli pdo_mysql redis xdebug zip
 
 # SSL証明書コピー
 COPY ./ssl/server.crt  /etc/ssl/certs/
