@@ -22,7 +22,6 @@ RUN install-php-extensions  intl gd exif imagick mysqli pdo_mysql redis xdebug z
 # SSL証明書コピー
 COPY ./ssl/server.crt  /etc/ssl/certs/
 COPY ./ssl/server.key /etc/ssl/private/
-COPY ./ssl/cacert.pem /etc/ssl/certs/
 RUN sed -i 's!/etc/ssl/certs/ssl-cert-snakeoil.pem!/etc/ssl/certs/server.crt!g' /etc/apache2/sites-available/default-ssl.conf \
     && sed -i 's!/etc/ssl/private/ssl-cert-snakeoil.key!/etc/ssl/private/server.key!g' /etc/apache2/sites-available/default-ssl.conf
 RUN a2enmod ssl \
