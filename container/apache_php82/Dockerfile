@@ -7,6 +7,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # update/install
 RUN apt-get update 
 RUN apt-get install -y git vim curl zip unzip
+# キャッシュ削除
+RUN rm -rf /var/lib/apt/lists/*
 
 # apache module activation
 RUN a2enmod deflate expires rewrite
