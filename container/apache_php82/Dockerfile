@@ -41,5 +41,5 @@ RUN mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled
 RUN /bin/sh -c a2enmod rewrite
 
 # コンテナ内で作業する際のカレンとディレクトリの指定
-WORKDIR /var/www/html
+WORKDIR /var/www/html/la
 
