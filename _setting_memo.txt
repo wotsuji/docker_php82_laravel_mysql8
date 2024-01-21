@@ -30,4 +30,7 @@ mv server.key server.key.org
 openssl rsa -in server.key.org > server.key
 ■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
+・Apacheの.htaccessでヘッダーの指定を使えるようにする（ブラウザにキャッシュさせないコードを入れたかった）
+（sudo a2enmod headers）
+a2enmod headers
 
